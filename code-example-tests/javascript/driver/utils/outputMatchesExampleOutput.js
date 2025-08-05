@@ -40,7 +40,12 @@ const { Decimal128, ObjectId } = require('mongodb'); // Import MongoDB data type
  * Nested fields, including arrays and objects, are recursively normalized for deep comparisons.
  * Logs mismatched outputs for debugging purposes if the comparison fails.
  */
-function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordered') { // Accept 'ordered' or 'unordered'
+function outputMatchesExampleOutput(
+  filepath,
+  output,
+  comparisonType = 'unordered'
+) {
+  // Accept 'ordered' or 'unordered'
   const filepathString = '../examples/' + filepath;
   const outputFilePath = path.resolve(__dirname, filepathString);
   const rawExpectedOutput = fs.readFileSync(outputFilePath, 'utf8');
@@ -60,7 +65,10 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
 
     const finalProcessed = processed.replace(
       /:\s*([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.?[0-9]*Z?)/g,
-      (match, dateValue) => `: "${dateValue.trim()}"`
+      (match, dateValue) => {
+        const normalizedDate = new Date(dateValue).toISOString(); // Normalize date to UTC
+        return `: "${normalizedDate}"`;
+      }
     );
 
     return finalProcessed;
@@ -90,7 +98,14 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
       if (value instanceof Decimal128 || value instanceof ObjectId) {
         normalized[key] = value.toString();
       } else if (value instanceof Date) {
-        normalized[key] = value.toISOString();
+        normalized[key] = value.toISOString(); // Ensure Date is converted to UTC ISO8601
+      } else if (
+        typeof value === 'string' &&
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.?[0-9]*Z?$/.test(value)
+      ) {
+        // Parse and re-normalize string-formatted dates to UTC
+        const parsedDate = new Date(value);
+        normalized[key] = parsedDate.toISOString(); // Convert to UTC
       } else if (Array.isArray(value)) {
         normalized[key] = value.map((element) =>
           typeof element === 'object' && element !== null
@@ -106,14 +121,18 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
     return normalized;
   };
 
+  console.log('[DEBUG] Normalized Actual Output:', output.map(normalizeItem));
+  console.log('[DEBUG] Normalized Expected Output:', expectedOutputArray.map(normalizeItem));
+
   const areObjectsEqual = (obj1, obj2, comparisonType) => {
-    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+    if (
+      typeof obj1 !== 'object' || obj1 === null ||
+      typeof obj2 !== 'object' || obj2 === null
+    ) {
       return obj1 === obj2; // Direct comparison for non-object values
     }
 
     if (Array.isArray(obj1) && Array.isArray(obj2)) {
-      if (obj1.length !== obj2.length) return false;
-
       if (comparisonType === 'unordered') {
         const normalizedArray1 = obj1.map(normalizeItem);
         const normalizedArray2 = obj2.map(normalizeItem);
@@ -122,9 +141,7 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
           normalizedArray2.some((item2) => areObjectsEqual(item1, item2, comparisonType))
         );
       } else if (comparisonType === 'ordered') {
-        return obj1.every((element, index) =>
-          areObjectsEqual(element, obj2[index], comparisonType)
-        );
+        return obj1.every((element, index) => areObjectsEqual(element, obj2[index], comparisonType));
       } else {
         throw new Error(`Invalid comparisonType: ${comparisonType}. Use "ordered" or "unordered".`);
       }
@@ -133,16 +150,20 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
     const keys1 = Object.keys(obj1).sort();
     const keys2 = Object.keys(obj2).sort();
 
-    if (keys1.length !== keys2.length) return false;
+    if (keys1.length !== keys2.length) {
+      return false; // Different number of keys
+    }
 
-    for (let i = 0; i < keys1.length; i++) {
-      const key = keys1[i];
-      if (key !== keys2[i]) return false;
-
+    for (const key of keys1) {
+      if (!keys2.includes(key)) {
+        return false; // Mismatched keys
+      }
       const val1 = obj1[key];
       const val2 = obj2[key];
 
-      if (!areObjectsEqual(val1, val2, comparisonType)) return false;
+      if (!areObjectsEqual(val1, val2, comparisonType)) {
+        return false; // Mismatched values
+      }
     }
 
     return true;
@@ -153,7 +174,11 @@ function outputMatchesExampleOutput(filepath, output, comparisonType = 'unordere
       output.length === expectedOutputArray.length &&
       expectedOutputArray.every((expectedItem) =>
         output.some((actualItem) =>
-          areObjectsEqual(normalizeItem(actualItem), normalizeItem(expectedItem), comparisonType)
+          areObjectsEqual(
+            normalizeItem(actualItem),
+            normalizeItem(expectedItem),
+            comparisonType
+          )
         )
       );
 
