@@ -74,7 +74,6 @@ function outputMatchesExampleOutput(
     return finalProcessed;
   };
 
-
   const processedExpectedOutput = preprocessFileContents(rawExpectedOutput);
 
   const context = {
@@ -139,16 +138,12 @@ function outputMatchesExampleOutput(
         const normalizedArray2 = obj2.map(normalizeItem);
 
         return normalizedArray1.every((item1) =>
-          normalizedArray2.some((item2) =>
-            areObjectsEqual(item1, item2, comparisonType)
-          )
+          normalizedArray2.some((item2) => areObjectsEqual(item1, item2, comparisonType))
         );
       } else if (comparisonType === 'ordered') {
         return obj1.every((element, index) => areObjectsEqual(element, obj2[index], comparisonType));
       } else {
-        throw new Error(
-          `Invalid comparisonType: ${comparisonType}. Use "ordered" or "unordered".`
-        );
+        throw new Error(`Invalid comparisonType: ${comparisonType}. Use "ordered" or "unordered".`);
       }
     }
 
