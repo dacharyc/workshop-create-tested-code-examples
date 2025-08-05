@@ -74,6 +74,7 @@ function outputMatchesExampleOutput(
     return finalProcessed;
   };
 
+
   const processedExpectedOutput = preprocessFileContents(rawExpectedOutput);
 
   const context = {
