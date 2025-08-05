@@ -7,14 +7,14 @@
    #. As you work with time series code examples, add them between the
       ``// start example code here`` and ``// end example code here`` comments.
 
-   .. literalinclude:: <INSERT FILE PATH HERE>
+   .. literalinclude:: /code-examples/tested/javascript/driver/time-series/sample-app.snippet.example.js
       :language: javascript
       :copyable: true
       :category: usage example
 
 .. step:: Create a new database.
 
-   .. literalinclude:: <INSERT FILE PATH HERE>
+   .. literalinclude:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-setup.snippet.create-db.js
       :language: javascript
       :copyable: true
       :category: syntax example
@@ -31,14 +31,14 @@
 
    a. Set the ``timeField``, ``metaField``, and ``granularity``:
 
-      .. literalinclude:: <INSERT FILE PATH HERE>
+      .. literalinclude:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-setup.snippet.set-coll-options.js
          :language: javascript
          :copyable: true
          :category: syntax example
 
    #. Create the collection using the ``db.createCollection()`` method:
 
-      .. literalinclude:: <INSERT FILE PATH HERE>
+      .. literalinclude:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-setup.snippet.create-collection.js
          :language: javascript
          :copyable: true
          :category: syntax example
@@ -50,7 +50,7 @@
    Use the ``db.collection.insertMany()`` method to add the
    following sample documents to the collection:
 
-   .. literalinclude:: <INSERT FILE PATH HERE>
+   .. literalinclude:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-setup.snippet.load-sample-data.js
       :language: javascript
       :copyable: true
       :category: usage example
@@ -73,21 +73,21 @@
    .. io-code-block::
       :copyable: true
 
-      .. input:: <INSERT FILE PATH HERE>
+      .. input:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start.snippet.meta-field-query.js
          :language: javascript
          :category: syntax example
 
-      .. output:: <INSERT FILE PATH HERE>
-         :language: text
+      .. output:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-meta-field-output.sh
+         :language: shell
 
    To query the ``timeField`` for a time span:
 
    .. io-code-block::
       :copyable: true
 
-      .. input:: <INSERT FILE PATH HERE>
+      .. input:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start.snippet.time-field-query.js
          :language: javascript
          :category: syntax example
 
-      .. output:: <INSERT FILE PATH HERE>
-         :language: text
+      .. output:: /code-examples/tested/javascript/driver/time-series/quick-start/quick-start-time-field-output.sh
+         :language: shell
