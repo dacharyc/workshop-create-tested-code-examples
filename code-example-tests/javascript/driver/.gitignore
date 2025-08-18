@@ -10,3 +10,5 @@ node_modules/
 
 # Secrets and keys ****DO NOT COMMIT SECRETS***
 .env
+
+.run/
