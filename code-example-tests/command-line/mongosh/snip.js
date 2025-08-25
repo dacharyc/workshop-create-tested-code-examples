@@ -2,11 +2,10 @@ import { processFiles } from "../../processFiles.js";
 import { spawnSync } from 'child_process';
 
 // ------ CONFIGURATION: Set these values for your language/project ----------
-const IGNORE_PATTERNS = new Set(["__pycache__", "example_folder", "example_stub.py",
-    "pylint-config.toml"]);
+const IGNORE_PATTERNS = new Set(["node_modules"]);
 
-const START_DIRECTORY = "code-example-tests/python/pymongo/examples";
-const OUTPUT_DIRECTORY = "content/code-examples/tested/python/pymongo";
+const START_DIRECTORY = "code-example-tests/command-line/mongosh/examples";
+const OUTPUT_DIRECTORY = "content/code-examples/tested/command-line/mongosh";
 // ------ END CONFIGURATION --------------------------------------------------
 
 // Check if Bluehawk is installed
@@ -26,10 +25,9 @@ function isBluehawkInstalled() {
   return true;
 }
 
-// NOTE: Pylint is a linter, not a formatter, and linting the output files
-// doesn't make sense because they are often small and atomic and missing
-// variable declarations or other code elements that would cause linting to fail.
-// Until we add a formatter for Python, we're only snipping the files here.
+// NOTE: Formatting with Prettier is not currently supported for the mongosh
+// code examples, because the default rules we used elsewhere conflict with the
+// mongosh script execution syntax - i.e. caused otherwise passing tests to fail.
 async function main() {
   // First, confirm the user has Bluehawk installed. If not, exit early.
   const bluehawkInstalled = isBluehawkInstalled();
