@@ -121,9 +121,6 @@ function outputMatchesExampleOutput(
     return normalized;
   };
 
-  console.log('[DEBUG] Normalized Actual Output:', output.map(normalizeItem));
-  console.log('[DEBUG] Normalized Expected Output:', expectedOutputArray.map(normalizeItem));
-
   const areObjectsEqual = (obj1, obj2, comparisonType) => {
     if (
       typeof obj1 !== 'object' || obj1 === null ||
