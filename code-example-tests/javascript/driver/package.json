@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "export $(xargs < .env) && jest --run-in-band --detectOpenHandles",
+    "test": "export $(xargs < .env) && jest --runInBand --detectOpenHandles --testMatch='**/tests/**/*.test.js'",
     "snip": "node snip.js",
     "format": "prettier --write ."
   },

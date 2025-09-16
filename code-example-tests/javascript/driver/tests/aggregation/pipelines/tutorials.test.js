@@ -31,7 +31,9 @@ describe('Aggregation pipeline filter tutorial tests', () => {
     await loadFilterSampleData();
     const result = await runFilterTutorial();
     const outputFilepath = 'aggregation/pipelines/filter/tutorial-output.sh';
-    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, 'unordered');
+    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, {
+      comparisonType: 'unordered',
+    });
     expect(arraysMatch).toBe(true);
   });
 
@@ -39,7 +41,9 @@ describe('Aggregation pipeline filter tutorial tests', () => {
     await loadGroupSampleData();
     const result = await runGroupTutorial();
     const outputFilepath = 'aggregation/pipelines/group/tutorial-output.sh';
-    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, 'unordered');
+    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, {
+      comparisonType: 'unordered',
+    });
     expect(arraysMatch).toBe(true);
   });
 
@@ -47,7 +51,9 @@ describe('Aggregation pipeline filter tutorial tests', () => {
     await loadUnwindSampleData();
     const result = await runUnwindTutorial();
     const outputFilepath = 'aggregation/pipelines/unwind/tutorial-output.sh';
-    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, 'unordered');
+    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, {
+      comparisonType: 'unordered',
+    });
     expect(arraysMatch).toBe(true);
   });
 
@@ -56,7 +62,9 @@ describe('Aggregation pipeline filter tutorial tests', () => {
     const result = await runJoinOneToOneTutorial();
     const outputFilepath =
       'aggregation/pipelines/join-one-to-one/tutorial-output.sh';
-    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, 'unordered');
+    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, {
+      comparisonType: 'unordered',
+    });
     expect(arraysMatch).toBe(true);
   });
 
@@ -65,7 +73,9 @@ describe('Aggregation pipeline filter tutorial tests', () => {
     const result = await runJoinMultiFieldTutorial();
     const outputFilepath =
       'aggregation/pipelines/join-multi-field/tutorial-output.sh';
-    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, 'unordered');
+    const arraysMatch = outputMatchesExampleOutput(outputFilepath, result, {
+      comparisonType: 'unordered',
+    });
     expect(arraysMatch).toBe(true);
   });
 });
